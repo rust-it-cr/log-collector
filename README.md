@@ -1,2 +1,92 @@
-# log-collector
-🛠️ Python tool for Junos log analysis: Extracts .tgz bundles and filters by timestamp/keyword.
+# Log Collector
+
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL_v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0) [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+
+🛠️ **Python tool for Junos log analysis:**
+extracts .tgz bundles and filters by timestamp/keyword. It speeds up log analysis and groups accordingly.
+
+## 💡 Who needs a log collector anyway?
+
+Network troubleshooting often requires analyzing Junos `.tgz` bundles that contain dozens of compressed log files. Manually extracting these and running `grep` or searching through text editors is time-consuming and prone to human error.
+
+I built **logc** to solve three specific problems:
+- **Efficiency:** Automates the extraction and recursive searching of multiple logs in seconds.
+- **Precision:** Uses specific timestamp logic to narrow down logs to the exact window of a network event, reducing "noise".
+- **Portability:** Designed with zero external dependencies so it can be used immediately on any jump host or production server with Python installed.
+
+## 📦 Installation
+
+You can install `logc` directly from this repository using `pip`:
+
+```bash
+pip install git+https://github.com/rust-it-cr/logc.git
+```
+
+## 🧩 Dependencies
+This tool is built entirely using the **Python Standard Library**. 
+- No third-party packages are required.
+- Easy to deploy in air-gapped or restricted production environments where Junos-generated .tgz log files must be analyzed.
+
+## 🛠 Usage
+
+Once installed, use the `logc` command in your terminal.
+
+### Help options:
+View all available filters and options:
+```bash
+logc -h
+```
+
+## 🛠 Examples
+
+### 1. Searching for specific errors
+If you need to find every instance of a BGP flap across on a file (or several thereof) in the bundle:
+```bash
+logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -f "messages" "bgp_logs" -k "BGP_IO_ERROR"
+```
+
+### 2. Searching for logs within a specific time
+If you need to find all the logs from a specifit timestamp or time range across different files (or just one):
+```bash
+logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -f "chassisd" -t "Oct  6 to Oct  8"
+```
+
+### 3. Combining filters:
+You can also filter by both keywords and timestamps if that's what you need:
+```bash
+logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -f "default-log-messages" -t "2025-01-01T00" -ka "crash" "version" "upgrade" 
+```
+
+### 4. Case-insensitive searching:
+If needed, you can perform a case-insensitive search if you don't remember if the keyword is lower- or upper-case, of a combination thereof:
+```bash
+logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -f "kmd-logs" -t "Jan 1  12" -ko "vpn" "ipsec" "ike" -i
+```
+
+## 🧪 Testing & Error handling
+
+This project includes a test suite to verify the extraction and filtering logic. 
+
+1. Install the development dependencies:
+```bash
+pip install pytest
+```
+
+2. Run the tests:
+```bash
+python -m pytest test_logc.py
+```
+
+Also, this tool has a way of handling unknown errors gracefully. If that happens, you will see the following output and a file in your "Desktop" folder (which then you can send me for debugging purposes):
+```bash
+logc -s "C:\Users\user_name\Downloads\corrupted-logs.tgz" -d "C:\Users\user_name\Downloads\no-file.txt" -f "messages" -k "ge-0/0/0"
+
+'An unknown error has ocurred. Open the "error.log" file in your Desktop directory to better understand what went wrong.'
+```
+
+## 📜 License
+
+This project is licensed under the **GNU Lesser General Public License v3.0 or later**. 
+
+- See the [COPYING](COPYING) file for the full GPLv3 text.
+- See the [COPYING.LESSER](COPYING.LESSER) file for the LGPLv3 additional permissions.
