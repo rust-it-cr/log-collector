@@ -112,12 +112,12 @@ def parse_logs_and_create_file(args):
 # filter and store logs based off of the specified parameters
 def filter_logs(logs, args):
     if args.time and args.key:
-        tmp = filter_by_parameter(logs, args.time)
+        tmp = filter_by_parameter(logs, args.time, args)
 
         if args.key_type == "ka":
-            tmp = filter_by_multiple_keys_AND(tmp, args.key)
+            tmp = filter_by_multiple_keys_AND(tmp, args.key, args)
         elif args.key_type == "ko":
-            tmp = filter_by_multiple_keys_OR(tmp, args.key)
+            tmp = filter_by_multiple_keys_OR(tmp, args.key, args)
         else:
             if args.ignore_case:
                 tmp = [item for item in tmp if str(args.key).lower() in str(item).lower()]
