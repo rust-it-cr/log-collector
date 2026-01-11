@@ -16,8 +16,19 @@ I built **logc** to solve three specific problems:
 
 ## 📦 Installation
 
-You can install `logc` directly from this repository using `pip`:
+Choose the method that works best for your environment:
 
+### Option 1: The Easy Way (No Git Required):
+1. Go to the [Releases](https://github.com/rust-it-cr/logc/releases) page.
+2. Download the `.whl` file from the latest version (v0.1.0).
+3. Open your terminal in your Downloads folder and run:
+```bash
+pip install logc-0.1.0-py3-none-any.whl
+```
+
+### Option 2: The Hard Way (Requires Git):
+
+If you have Git installed, you can install the package directly from this repository:
 ```bash
 pip install git+https://github.com/rust-it-cr/logc.git
 ```
