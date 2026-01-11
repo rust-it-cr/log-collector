@@ -16,21 +16,29 @@ I built **logc** to solve three specific problems:
 
 ## 📦 Installation
 
-Choose the method that works best for your environment:
+The recommended way to install **logc** is using `pipx`. This ensures the tool works on Windows, Mac, and Linux by automatically managing your environment and system PATH.
 
-### Option 1: The Easy Way (No Git Required):
-1. Go to the [Releases](https://github.com/rust-it-cr/logc/releases) page.
-2. Download the `.whl` file from the latest version (v0.1.0).
-3. Open your terminal in your Downloads folder and run:
+### 1. Set up pipx (first time only - just for Windows)
+If you don't have `pipx` installed, run:
 ```bash
-pip install logc-0.1.0-py3-none-any.whl
+python -m pip install --user pipx
+python -m pipx ensurepath
 ```
 
-### Option 2: The Hard Way (Requires Git):
+Note: Restart your terminal after running ensurepath.
 
-If you have Git installed, you can install the package directly from this repository:
+### 2. Install the tool:
+
+Install directly from the latest GitHub release:
+
 ```bash
-pip install git+https://github.com/rust-it-cr/logc.git
+pipx install https://github.com/rust-it-cr/log-collector/releases/download/v0.1.1/logc-0.1.1-py3-none-any.whl
+```
+
+Or, download the .whl file from the GitHub page and run the following:
+
+```bash
+pipx install ./logc-0.1.1-py3-none-any.whl
 ```
 
 ## 🧩 Dependencies
