@@ -31,19 +31,12 @@ Note: Restart your terminal after running ensurepath.
 
 ### 2. Install the tool:
 
-To install **logc**, run the following command using [pipx](https://pypi.org/project/pipx/):
+To install **logc**, run the following command:
 
 ```bash
 pipx install git+https://github.com/rust-it-cr/log-collector.git
 ```
-**Note**: This first installation method requires [Git](https://www.google.com/search?q=https://git-scm.com/downloads) to be installed on your local machine. However, you do not need a GitHub account to download the tool.
-
-Or, simply download the .whl file from the latest release and run the following:
-
-
-```bash
-pipx install ./logc-0.1.3-py3-none-any.whl
-```
+**Note**: This installation method requires [Git](https://www.google.com/search?q=https://git-scm.com/downloads) to be installed on your local machine. However, you do not need a GitHub account to download the tool.
 
 ### 3. Update the tool:
 
