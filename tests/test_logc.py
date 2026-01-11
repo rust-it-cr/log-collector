@@ -1,16 +1,10 @@
-import logc
+from logc_tool.logc import parse_arguments, curate_and_standardize_cli_input
 import pytest
-
-
-def main():
-    test_basic_parsing()
-    test_missing_flag()
-    test_mutually_exclusive_keys()
 
 # test the basic parameters for the parser work just fine
 def test_basic_parsing():
     test_args = ["-s", "test-logs.tgz", "-d", "output.txt", "-f", "chassisd", "-t", "Oct  6 to Oct  8"]
-    parsed = logc.parse_arguments(test_args)
+    parsed = parse_arguments(test_args)
 
     assert parsed.source == "test-logs.tgz"
     assert parsed.destination == "output.txt"
@@ -24,16 +18,13 @@ def test_missing_flag():
 
     # it exits with the "Please, specify at least -t or -k, or both." message
     with pytest.raises(SystemExit):
-        parsed = logc.parse_arguments(test_args)
-        logc.curate_and_standardize_cli_input(parsed)
+        parsed = parse_arguments(test_args)
+        curate_and_standardize_cli_input(parsed)
 
 # test the parser rejects mutually exclusive keys
 def test_mutually_exclusive_keys():
-    test_args = ["-s", "test-logs.tgz", "-d", "output.txt", "-f", "chassisd", "-k", "banana", "-ka", ["banana, apple"]]
+    test_args = ["-s", "test-logs.tgz", "-d", "output.txt", "-f", "chassisd", "-k", "banana", "-ka", "banana", "apple"]
 
     with pytest.raises(SystemExit):
-        parsed = logc.parse_arguments(test_args)
+        parsed = parse_arguments(test_args)
 
-
-if __name__ == "__main__":
-    main()
