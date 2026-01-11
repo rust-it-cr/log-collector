@@ -96,7 +96,7 @@ def parse_logs_and_create_file(args):
             
             if str(file).endswith(".gz"):
                 with gzip.open(collector, "rt") as gz_collector:
-                    parsed_logs = filter_logs(gz_collector.readlines())
+                    parsed_logs = filter_logs(gz_collector.readlines(), args)
             else:
                 collector = io.TextIOWrapper(collector, encoding="latin1")
                 parsed_logs = filter_logs(collector.readlines(), args)
