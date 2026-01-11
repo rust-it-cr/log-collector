@@ -3,7 +3,7 @@
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL_v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0) [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 
 🛠️ **Python tool for Junos log analysis:**
-extracts .tgz bundles and filters by timestamp/keyword, generating a single .txt file as output. It speeds up log analysis and groups accordingly.
+extracts .tgz bundles and filters by timestamp/keyword, generating a single .txt file as output. It speeds up log analysis and groups logs accordingly.
 
 ## 💡 Who needs a log collector anyway?
 
@@ -11,8 +11,10 @@ Network troubleshooting often requires analyzing Junos `.tgz` bundles that conta
 
 I built **logc** to solve three specific problems:
 - **Efficiency:** Automates the extraction and recursive searching of multiple logs in seconds.
-- **Precision:** Uses specific timestamp logic to narrow down logs to the exact window of a network event, reducing "noise".
-- **Portability:** Designed with zero external dependencies so it can be used immediately on any jump host or production server with Python installed.
+- **Precision:** Uses specific timestamp and/or keyword logic to narrow down logs to the exact window of a network event, reducing "noise".
+- **Portability:** Designed with zero external dependencies so it can be used immediately on any device with Python installed.
+
+It works as follows: it checks for a .tgz file, inspects all log files therein, and extracts all logs into a single file based on timestamp and or keyword. The output is a structured file with the name of each log file at the beginning of each section and the relevant logs underneath the headers. As an aside note, this is my first project in Python. Building it was fun, and I'm here for any fixes that may be necessary.
 
 ## 📦 Installation
 
@@ -116,7 +118,7 @@ Also, this tool has a way of handling unknown errors gracefully. If that happens
 ```bash
 logc -s "C:\Users\user_name\Downloads\corrupted-logs.tgz" -d "C:\Users\user_name\Downloads\no-file.txt" -f "messages" -k "ge-0/0/0"
 
-'An unknown error occurred. Please check the 'error.log' file on your Desktop for technical details.'
+'An unknown error occurred. Please check the "error.log" file on your Desktop for technical details.'
 ```
 
 ## 📜 License
