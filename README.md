@@ -3,7 +3,7 @@
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL_v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0) [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 
 🛠️ **Python tool for Junos log analysis:**
-extracts .tgz bundles and filters by timestamp/keyword. It speeds up log analysis and groups accordingly.
+extracts .tgz bundles and filters by timestamp/keyword, generating a single .txt file as output. It speeds up log analysis and groups accordingly.
 
 ## 💡 Who needs a log collector anyway?
 
@@ -44,7 +44,7 @@ pipx install ./logc-0.1.2-py3-none-any.whl
 ## 🧩 Dependencies
 This tool is built entirely using the **Python Standard Library**. 
 - No third-party packages are required.
-- Easy to deploy in air-gapped or restricted production environments where Junos-generated .tgz log files must be analyzed.
+- Easy to deploy in environments where Junos-generated .tgz log files must be analyzed.
 
 ## 🛠 Usage
 
@@ -84,7 +84,7 @@ logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/outpu
 
 ## 🧪 Testing & Error Handling
 
-This project uses pytest and the standard src layout. To run tests, you must install the project in editable mode so the test suite can locate the package logic.
+This project uses `pytest` and the standard src layout. To run tests, you must install the project in editable mode so the test suite can locate the package logic.
 
 1. Install the package and dependencies:
 ```bash
