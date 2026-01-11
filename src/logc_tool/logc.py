@@ -138,7 +138,7 @@ def filter_logs(logs, args):
         elif args.key_type == "ko":
             tmp = filter_by_multiple_keys_OR(logs, args.key, args)
         else:
-            tmp = filter_by_parameter(logs, args.key)
+            tmp = filter_by_parameter(logs, args.key, args)
         
         if len(tmp) == 0:
             tmp = ["Pattern not found"]
