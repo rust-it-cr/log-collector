@@ -34,13 +34,13 @@ Note: Restart your terminal after running ensurepath.
 Install directly from the latest GitHub release:
 
 ```bash
-pipx install https://github.com/rust-it-cr/log-collector/releases/download/v0.1.2/logc-0.1.2-py3-none-any.whl
+pipx install https://github.com/rust-it-cr/log-collector/releases/download/v0.1.3/logc-0.1.3-py3-none-any.whl
 ```
 
 Or, download the .whl file from the GitHub page and run the following:
 
 ```bash
-pipx install ./logc-0.1.2-py3-none-any.whl
+pipx install ./logc-0.1.3-py3-none-any.whl
 ```
 
 ## 🧩 Dependencies
