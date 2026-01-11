@@ -16,12 +16,12 @@ I built **logc** to solve three specific problems:
 
 It works as follows: it checks for a .tgz file, inspects all log files therein, and extracts all logs into a single file based on timestamp and or keyword. The output is a structured file with the name of each log file at the beginning of each section and the relevant logs underneath the headers. As an aside note, this is my first project in Python. Building it was fun, and I'm here for any fixes that may be necessary.
 
-## 📦 Installation
+## 📦 Installing, Updating, and/or Uninstalling **logc**
 
 The recommended way to install **logc** is using `pipx`. This ensures the tool works on Windows, Mac, and Linux by automatically managing your environment and system PATH.
 
 ### 1. Set up pipx (first time only - just for Windows)
-If you don't have `pipx` installed, run:
+If you don't have [pipx](https://pypi.org/project/pipx/) installed, run:
 ```bash
 python -m pip install --user pipx
 python -m pipx ensurepath
@@ -31,16 +31,40 @@ Note: Restart your terminal after running ensurepath.
 
 ### 2. Install the tool:
 
-Install directly from the latest GitHub release:
+To install **logc**, run the following command using [pipx](https://pypi.org/project/pipx/):
 
 ```bash
-pipx install https://github.com/rust-it-cr/log-collector/releases/download/v0.1.3/logc-0.1.3-py3-none-any.whl
+pipx install git+https://github.com/rust-it-cr/log-collector.git
 ```
+**Note**: This first installation method requires [Git](https://www.google.com/search?q=https://git-scm.com/downloads) to be installed on your local machine. However, you do not need a GitHub account to download the tool.
 
-Or, download the .whl file from the GitHub page and run the following:
+Or, simply download the .whl file from the latest release and run the following:
+
 
 ```bash
 pipx install ./logc-0.1.3-py3-none-any.whl
+```
+
+### 3. Update the tool:
+
+To update the tool, simply run the following command:
+
+```bash
+pipx upgrade logc
+```
+
+If already up to date, your terminal will display the following message:
+
+```bash
+"logc is already at latest version x.y.z (location: <location on your PC>)"
+```
+
+### 4. Uninstall the tool:
+
+If for some reason you don't want to use this tool any longer, uninstalling it is as simple as running this command:
+
+```bash
+pipx uninstall logc
 ```
 
 ## 🧩 Dependencies
