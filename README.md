@@ -32,13 +32,13 @@ Note: Restart your terminal after running ensurepath.
 Install directly from the latest GitHub release:
 
 ```bash
-pipx install https://github.com/rust-it-cr/log-collector/releases/download/v0.1.1/logc-0.1.1-py3-none-any.whl
+pipx install https://github.com/rust-it-cr/log-collector/releases/download/v0.1.2/logc-0.1.2-py3-none-any.whl
 ```
 
 Or, download the .whl file from the GitHub page and run the following:
 
 ```bash
-pipx install ./logc-0.1.1-py3-none-any.whl
+pipx install ./logc-0.1.2-py3-none-any.whl
 ```
 
 ## 🧩 Dependencies
@@ -116,7 +116,7 @@ Also, this tool has a way of handling unknown errors gracefully. If that happens
 ```bash
 logc -s "C:\Users\user_name\Downloads\corrupted-logs.tgz" -d "C:\Users\user_name\Downloads\no-file.txt" -f "messages" -k "ge-0/0/0"
 
-'An unknown error has ocurred. Open the "error.log" file in your Desktop directory to better understand what went wrong.'
+'An unknown error occurred. Please check the 'error.log' file on your Desktop for technical details.'
 ```
 
 ## 📜 License
