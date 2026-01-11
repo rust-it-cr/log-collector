@@ -27,21 +27,21 @@ def main():
         parse_logs_and_create_file(args)
 
     except AttributeError:
-        sys.exit("You must specify at least the following flags and its values for the script to work: -s, -d, -f, and either -t, -k, or both.")
+        sys.exit("Error: Missing flag. You must specify at least the following flags and its values for the script to work: -s, -d, -f, and either -t, -k, or both.")
     except EOFError:
-        sys.exit("An output file couldn't be generated. Check if the .tgz file is corrupted or any file therein.")
-    except FileNotFoundError or KeyError:
-        sys.exit("Please, specify existent and valid files. No output file will be produced unless the files you specify really exist.")
+        sys.exit("Error: The .tgz file appears to be corrupted or incomplete. An output file could not be generated.")
+    except (FileNotFoundError, KeyError):
+        sys.exit("Error: One or more files were not found. Please verify that the source .tgz path is correct and that the log files you specified exist inside the archive.")
     except TypeError:
-        sys.exit("Please, check the correctness of your arguments.")
+        sys.exit("Error: Data type mismatch. Please ensure your arguments (like timestamps and/or keywords) are wrapped in quotation marks.")
     except ValueError:
-        sys.exit("Either of the specified timestamps (or both) don't exist within the file.")
+        sys.exit("Error: Timestamp mismatch. The specified timestamp(s) were not found within the log files, or the format is incorrect.")
     except Exception as error:
         log_error(error)
-        sys.exit(f'An unknown error has ocurred. Open the "error.log" file in your Desktop directory to better understand what went wrong.')
+        sys.exit(f"An unknown error occurred. Please check the 'error.log' file on your Desktop for technical details.")
 
     else:
-        print(f"{args.destination} has been successfully created!")
+        print(f"Successfully generated: {args.destination}")
         sys.exit(0)
 
 # initialize a parser object with its arguments to fetch user input from the command-line
@@ -240,15 +240,18 @@ def log_error(error):
     username = getpass.getuser()
     date = datetime.datetime.now().strftime("%Y-%m-%d")
 
-    log_path = pathlib.Path.home() / "Desktop" / f"{username}_{date}_error.log"
+    log_path = pathlib.Path.home() / "Desktop" / f"{username}_{date}_logc_error.log"
 
-    logging.basicConfig(
-            filename=log_path,
-            level=logging.ERROR,
-            format="%(asctime)s | %(levelname)s: %(message)s"
-        )
+    logger = logging.getLogger("logc_logger")
+    logger.setLevel(logging.ERROR)
+
+    if not logger.handlers:
+        file_handler = logging.FileHandler(log_path, encoding="utf-8")
+        formatter = logging.Formatter("%(asctime)s | %(levelname)s: %(message)s")
+        file_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
     
-    logging.error(f"{error}", exc_info=True)
+    logger.error(f"Execution failed: {error}", exc_info=True)
 
 
 if __name__ == "__main__":
