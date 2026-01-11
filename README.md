@@ -63,19 +63,35 @@ If needed, you can perform a case-insensitive search if you don't remember if th
 logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -f "kmd-logs" -t "Jan 1  12" -ko "vpn" "ipsec" "ike" -i
 ```
 
-## 🧪 Testing & Error handling
+## 🧪 Testing & Error Handling
 
-This project includes a test suite to verify the extraction and filtering logic. 
+This project uses pytest and the standard src layout. To run tests, you must install the project in editable mode so the test suite can locate the package logic.
 
-1. Install the development dependencies:
+1. Install the package and dependencies:
 ```bash
 pip install pytest
+# Install the tool locally in editable mode
+pip install -e .
 ```
 
 2. Run the tests:
+
+Always run the tests from the project root directory (where the pyproject.toml file is located). This ensures the logc_tool package is correctly discovered.
+
+For Windows users:
 ```bash
-python -m pytest test_logc.py
+python -m pytest
 ```
+
+For MacOS/Linux users:
+
+```bash
+pytest
+```
+
+[!IMPORTANT] Do not run the tests from inside the tests/ folder. Running from the root directory allows pytest to properly map the src/ layout and find all test files automatically.
+
+3. Unknown errors handling:
 
 Also, this tool has a way of handling unknown errors gracefully. If that happens, you will see the following output and a file in your "Desktop" folder (which then you can send me for debugging purposes):
 ```bash
@@ -89,4 +105,5 @@ logc -s "C:\Users\user_name\Downloads\corrupted-logs.tgz" -d "C:\Users\user_name
 This project is licensed under the **GNU Lesser General Public License v3.0 or later**. 
 
 - See the [COPYING](COPYING) file for the full GPLv3 text.
+
 - See the [COPYING.LESSER](COPYING.LESSER) file for the LGPLv3 additional permissions.
