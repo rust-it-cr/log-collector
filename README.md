@@ -27,7 +27,7 @@ python -m pip install --user pipx
 python -m pipx ensurepath
 ```
 
-Note: Restart your terminal after running ensurepath.
+**Note**: Restart your terminal after running ensurepath.
 
 ### 2. Install the tool:
 
@@ -108,7 +108,6 @@ This project uses `pytest` and the standard src layout. To run tests, you must i
 1. Install the package and dependencies:
 ```bash
 pip install pytest
-# Install the tool locally in editable mode
 pip install -e .
 ```
 
@@ -127,7 +126,7 @@ For MacOS/Linux users:
 pytest
 ```
 
-[!IMPORTANT] Do not run the tests from inside the tests/ folder. Running from the root directory allows pytest to properly map the src/ layout and find all test files automatically.
+[**IMPORTANT**] Do not run the tests from inside the tests/ folder. Running from the root directory allows pytest to properly map the src/ layout and find all test files automatically.
 
 3. Unknown errors handling:
 
