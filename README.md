@@ -92,14 +92,28 @@ logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/outpu
 ### 3. Combining filters:
 You can also filter by both keywords and timestamps if that's what you need:
 ```bash
-logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -f "default-log-messages" -t "2025-01-01T00" -ka "crash" "version" "upgrade" 
+logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -f "default-log-messages" -t "2025-01-01T00" -k "crash" and "version" and "upgrade" 
 ```
 
 ### 4. Case-insensitive searching:
 If needed, you can perform a case-insensitive search if you don't remember if the keyword is lower- or upper-case, of a combination thereof:
 ```bash
-logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -f "kmd-logs" -t "Jan 1  12" -ko "vpn" "ipsec" "ike" -i
+logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -f "kmd-logs" -t "Jan 1  12" -k "vpn" or "ipsec" or "ike" -i
 ```
+
+### 5. Wildcard matching:
+If needed, you can use a wildcard to gather the files that match your expression:
+```bash
+logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -w "chassisd" -k "fpc" and "pic"
+```
+
+In this case, `-w "chassisd"` matches all files starting with that pattern, e.g., chassisd, chassisd.0.gz, chassisd.1.gz, etc. There's an special use for this:
+
+```bash
+logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -w all -k "vpn" or "bgp" or "l2vpn" or "chassisd" -i
+```
+
+The `all` parameter matches on all parsable files within the greater .tgz file for a really general serach.
 
 ## 🧪 Testing & Error Handling
 
