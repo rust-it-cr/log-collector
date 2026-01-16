@@ -142,13 +142,15 @@ pytest
 
 [**IMPORTANT**] Do not run the tests from inside the tests/ folder. Running from the root directory allows pytest to properly map the src/ layout and find all test files automatically.
 
-3. Unknown errors handling:
+3. Unknown error handling:
 
 Also, this tool has a way of handling unknown errors gracefully. If that happens, you will see the following output and a file in your "Desktop" folder (which then you can send me for debugging purposes):
 ```bash
 logc -s "C:\Users\user_name\Downloads\corrupted-logs.tgz" -d "C:\Users\user_name\Downloads\no-file.txt" -f "messages" -k "ge-0/0/0"
 
-'An unknown error occurred. Please check the "error.log" file on your Desktop for technical details.'
+'An error has occurred!'
+'Error: <a technical description of the error>'
+'Check the logc_error.log file for technical details and check the official guide (logc -h) for a guide on how to use this program.'
 ```
 
 ## 📜 License
