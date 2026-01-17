@@ -107,8 +107,17 @@ If needed, you can use a wildcard to gather the files that match your expression
 logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -w "chassisd" -k "fpc" and "pic"
 ```
 
-In this case, `-w "chassisd"` matches all files starting with that pattern, e.g., chassisd, chassisd.0.gz, chassisd.1.gz, etc. There's an special use for this:
+In this case, `-w "chassisd"` matches all files starting with that pattern, e.g., chassisd, chassisd.0.gz, chassisd.1.gz, etc.
 
+You can also do a match on several expressions to parse many different files:
+
+```bash
+logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -w "chassisd" "messages" "jsrpd" -t "Jan 16 06"
+```
+
+This will match on all variety of files starting with `"chassisd"`, `"messages"`, or `"jsrpd"`.
+
+There's an special use for the `-w` parameter:
 ```bash
 logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -w all -k "vpn" or "bgp" or "l2vpn" or "chassisd" -i
 ```
