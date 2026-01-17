@@ -127,7 +127,7 @@ def parse_args(args=None):
 
     FILE_TAKING = PARSER.add_mutually_exclusive_group() # Either parameter here supports one or more files when using a timestamp, but not a time range
     FILE_TAKING.add_argument("-f", "--file", help=file_help, nargs="+")
-    FILE_TAKING.add_argument("-w", "--wildcard", help=wildcard_help)
+    FILE_TAKING.add_argument("-w", "--wildcard", help=wildcard_help, nargs="+")
 
     args = PARSER.parse_args(args)
 
@@ -347,4 +347,5 @@ def write_new_file(log_files, destination, file_names):
 
 
 if __name__ == "__main__":
+
     main()
