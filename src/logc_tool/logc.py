@@ -93,7 +93,7 @@ def get_wildcard_files(source, wildcard):
             
             file = file.replace("var/log/", "") # Delete "var/log" to obtain the raw file name
 
-            if wildcard == "all": # Perform a query on all files
+            if wildcard == "all": # Perform a query on all possible files within the .tgz file
                 tmp.append(file)
             else:
                 for w in wildcard: # Check for more than one wildcard argument
