@@ -69,6 +69,9 @@ def main():
     except (FileNotFoundError, KeyError) as e: # Error out if any specified file in either -s or -f doesn't exist
         sys.exit(f"Failure: {e}. Please, verify that the files you're matching actually exist.")
 
+    except PermissionError as e: # Error out if the user tries to open a file for which they don't have enough permissions
+        sys.exit(f"Failure: {e}. You don't have permission to parse this file or directory.")
+
     except re.PatternError as e: # Error out if the wildcard expression can't match any files
         sys.exit(f"Failure: {e}. Please, check that your wildcard expression is correctly formed.")
 
