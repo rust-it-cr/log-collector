@@ -327,10 +327,18 @@ def log_error(error, args):
 # Generate a new file with all the filtered files
 def write_new_file(log_files, destination, file_names):
     with open(pathlib.Path(destination), "a") as new_file: # Open the destination as a new file and in append mode to support more than one file
+        
         for i in range(len(log_files)): # Iterate over a range instead of the file itself to have an index for both the file itself and the file title
+            
             new_file.write(f'Log file: "{file_names[i]}"\n\n') # Write the title of the current file
-            for log in log_files[i]: # Iterate over each log in the current file and append it to the output file
-                new_file.write(f"{log}\n")
+            
+            if log_files[i] == "Pattern not found": # In case of just filtering with -t, to prevent this message from displaying in a weird way
+                new_file.write(f"{log_files[i]}\n")
+
+            else:
+                for log in log_files[i]: # Iterate over each log in the current file and append it to the output file
+                    new_file.write(f"{log}\n")
+
             new_file.write("\n") # Write a newline after each line for better readability
 
     return f"Successfully generated: {destination}"
