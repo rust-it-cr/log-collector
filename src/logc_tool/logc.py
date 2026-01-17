@@ -92,11 +92,13 @@ def get_wildcard_files(source, wildcard):
             _, file, _ = str(item).split("'") # Split the matching item to get a string like "var/log/{name}"
             
             file = file.replace("var/log/", "") # Delete "var/log" to obtain the raw file name
-            
-            if wildcard == "all":
+
+            if wildcard == "all": # Perform a query on all files
                 tmp.append(file)
-            elif re.match(wildcard, file, re.IGNORECASE): # Use the user wildcard as a regex for matching
-                tmp.append(file)
+            else:
+                for w in wildcard: # Check for more than one wildcard argument
+                    if re.match(w, file, re.IGNORECASE): # Use the user wildcard as a regex for matching
+                        tmp.append(file)
 
     if len(tmp) == 0: # If tmp is empty, that means there was no match
         raise FileNotFoundError("Wildcard didn't match any file")
