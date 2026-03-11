@@ -75,6 +75,9 @@ def main():
     except (FileNotFoundError, KeyError) as e:  # Error out if any specified file in either -s or -f doesn't exist
         sys.exit(f"Failure: {e}. Please, verify that the files you're matching actually exist.")
 
+    except KeyboardInterrupt: # To have a smooth way of getting out the program when interrupting it
+        sys.exit("Log collection cancelled.")
+
     except PermissionError as e:  # Error out if the user tries to open a file for which they don't have enough permissions
         sys.exit(f"Failure: {e}. You don't have permission to parse this file or directory.")
 
@@ -171,7 +174,7 @@ def open_tgz(source, items):
                     file = io.TextIOWrapper(file, encoding="cp1252")  # Standardize all files to cp1252 encoding
                     tmp.append(file.readlines())
 
-            except (UnicodeDecodeError, KeyError):
+            except (UnicodeDecodeError, KeyError, gzip.BadGzipFile):
                 pass
 
     return tmp
