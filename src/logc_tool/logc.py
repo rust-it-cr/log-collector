@@ -10,23 +10,18 @@ import re
 import sys
 import tarfile
 
-
 # Custom classes for specific errors
 class BothOperatorsError(Exception):  # If trying to use both AND and OR operators for -k filtering
     pass
 
-
 class InvalidTimeError(Exception):  # If the specified -t parameter doesn't match either regex
     pass
-
 
 class MoreThanOneFileError(Exception):  # If trying to parse more than one file at a time when using a time range
     pass
 
-
 class NoOperatorError(Exception):  # If using -k with multiple parameters but neither operator is present
     pass
-
 
 class NonExistentRangeError(Exception):  # If the specified time range doesn't exist within a given file
     pass
@@ -48,9 +43,6 @@ def main():
         filtered_files = []
 
         for file in files:
-            if args.ignore_case:  # If -i is present, store the real file in a variable and lowercase all other variables: the files and logs therein and the time and keys to filter
-                real_file = file
-                file, args.key, args.time = lower_input(file, args.key, args.time)
 
             if args.time and args.key:  # For filtering with both -t and -k
                 file = parse_by_time(file, args.time, titles)
@@ -60,13 +52,9 @@ def main():
             elif args.key:  # For filtering with only -k
                 file = parse_by_key(file, args.key)
 
-            if args.ignore_case and "Pattern not found" not in file:  # If -i is set and the the filtered file is populated with logs, restore them to their original casing
-                file = restore_logs(file, real_file)
-
             filtered_files.append(file)
 
-        success = write_new_file(filtered_files, args.destination,
-                                 titles)  # If successful, write an output file with the filtered logs and exit the program
+        success = write_new_file(filtered_files, args.destination, titles)  # If successful, write an output file with the filtered logs and exit the program
         sys.exit(success)
 
     except EOFError as e:  # Error out if the source file is corrupted
@@ -87,15 +75,12 @@ def main():
     except TypeError as e:  # Error out whenever the user isn't using all required flags
         sys.exit(f"Failure: {e}. Please, check that you're typing out all required arguments.")
 
-    except (BothOperatorsError, InvalidTimeError, MoreThanOneFileError, NoOperatorError,
-            NonExistentRangeError) as e:  # Error out for all custom errors
+    except (BothOperatorsError, InvalidTimeError, MoreThanOneFileError, NoOperatorError, NonExistentRangeError, UnboundLocalError) as e:  # Error out for all known input errors
         sys.exit(f"Failure: {e}. Please, correct your input.")
 
     except Exception as e:  # Catch all unknown errors and generate a debugging file in the user's Desktop
-        failure = log_error(e,
-                            args)  # Send the error message and args.Namespace to the logging function for proper error file generation
+        failure = log_error(e, args)  # Send the error message and args.Namespace to the logging function for proper error file generation
         sys.exit(failure)
-
 
 # When using the -w flag, create a list of all matching files
 def get_wildcard_files(source, wildcard):
@@ -120,7 +105,6 @@ def get_wildcard_files(source, wildcard):
 
     return tmp
 
-
 # This function parses all command-line arguments and returns a Namespace objects with all parameters for input file(s) finding, log filtering, and output file generation. All help messages are stored in variables that are then passed to each object for more clarity.
 def parse_args(args=None):
     source_help = "source path for the compressed file that contains the log files to be parsed. Must be an absolute path."
@@ -131,13 +115,12 @@ def parse_args(args=None):
     file_help = "specify one or more files for their logs to be parsed and extracted into the output file. You can only specify a timestamp and not a time range if parsing more than one file."
     wildcard_help = "specify a regular expression to collect all files matching it. This can't be used if you're using a time range."
 
-    parser_description = "This tool takes a Junos-like .tgz file with logs and generates a .txt file from the specified log files therein based on a specific timestamp/time range or keyword/keylist. All arguments should be wrapped around quotation marks."
+    parser_description = "This tool takes a Junos-like .tgz file (with a path of '/var/log/files' inside the file)with logs and generates a .txt file from the specified log files therein based on a specific timestamp/time range or keyword/keylist. All arguments should be wrapped around quotation marks."
 
     PARSER = argparse.ArgumentParser(description=parser_description)
 
     PARSER.add_argument("-s", "--source", help=source_help)
     PARSER.add_argument("-t", "--time", help=time_help)
-    PARSER.add_argument("-i", "--ignore_case", help=ignore_case_help, action="store_true")
     PARSER.add_argument("-d", "--destination", help=destination_help)
     PARSER.add_argument("-k", "--key", help=key_help, nargs="+")
 
@@ -151,7 +134,6 @@ def parse_args(args=None):
         raise TypeError("You didn't specify at least one filtering parameter")
 
     return args
-
 
 # Open a .tgz file, match on all files specified in -f, open them, read them, and return a list with each file as a list of logs
 def open_tgz(source, items):
@@ -179,33 +161,12 @@ def open_tgz(source, items):
 
     return tmp
 
-
-# If -i is set, lower all files with logs, all -k parameters, and any -t parameter, if present; return all parameters but lowered
-def lower_input(file, keys, time):
-    tmp_file = []
-    tmp_keys = []
-
-    for log in file:
-        tmp_file.append(log.lower())
-
-    for key in keys:
-        tmp_keys.append(key.lower())
-
-    if time == None:  # In case no -t parameter was specified
-        tmp_time = None
-    else:
-        tmp_time = time.lower()
-
-    return tmp_file, tmp_keys, tmp_time  # return new objects, not the original ones modified
-
-
 # This function filters logs based on the time parameter specified within -t, either by range or by specific timestamp
 def parse_by_time(file, time, files):
     BSD_FORMAT = r"^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)  ?\d?\d( \d\d(:\d\d(:\d\d)?)?)?( to (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)  ?\d?\d( \d\d(:\d\d(:\d\d)?)?)?)?$"  # REGEX for BSD-formatted logs
     SD_SYSLOG_FORMAT = r"\d\d\d\d-\d\d-\d\d(T\d\d(:\d\d(:\d\d)?)?)?( to \d\d\d\d-\d\d-\d\d(T\d\d(:\d\d(:\d\d)?)?)?)?"  # REGEX for sd-syslog-formatted logs
 
-    if not re.search(BSD_FORMAT, time, re.IGNORECASE) and not re.search(SD_SYSLOG_FORMAT, time,
-                                                                        re.IGNORECASE):  # Avoid overly wrong time formats
+    if not re.search(BSD_FORMAT, time, re.IGNORECASE) and not re.search(SD_SYSLOG_FORMAT, time, re.IGNORECASE):  # Avoid overly wrong time formats
         raise InvalidTimeError("Incorrect time format")
 
     if " to " in time and len(files) != 1:  # Support only for one file in -f at a time when using a time range
@@ -256,7 +217,6 @@ def parse_by_time(file, time, files):
 
     return tmp
 
-
 # Filter logs based on keyword(s)
 def parse_by_key(file, keys):
     tmp = []
@@ -282,7 +242,6 @@ def parse_by_key(file, keys):
 
     return tmp
 
-
 # These removes all "and" and/or "or" keywords for proper filtering
 def remove_operator(keys):
     tmp = []
@@ -297,7 +256,6 @@ def remove_operator(keys):
 
     return tmp
 
-
 # Filter based on AND logic
 def and_filter(file, keys):
     tmp = []
@@ -309,7 +267,6 @@ def and_filter(file, keys):
 
     return tmp
 
-
 # Filter based on OR logic
 def or_filter(file, keys):
     tmp = []
@@ -320,19 +277,6 @@ def or_filter(file, keys):
                 tmp.append(log.strip())
 
     return tmp
-
-
-# Restore all lowered filtered logs to their original casing
-def restore_logs(file, real_file):
-    tmp = []
-
-    for lower_log in file:  # iterate over each lowered log in the current file
-        for log in real_file:  # iterate over all logs in the original file for the current lowered log
-            if lower_log in log.lower():  # if the lowered log is equal to the lowered version of the original log, include the original log in tmp
-                tmp.append(log.strip())
-
-    return tmp
-
 
 # If an error occurs, generate an error file with the detail of the error and the stacktrace for debugging
 def log_error(error, args):
@@ -353,7 +297,6 @@ def log_error(error, args):
                  exc_info=True)  # Generate an error file
 
     return f'An error has occurred!\nError: {error}\nCheck the {log_path} file for technical details and check the official guide ("logc -h") for a guide on how to use this program.'  # Return a more user-friendly error message to know where to locate the error file
-
 
 # Generate a new file with all the filtered files
 def write_new_file(log_files, destination, file_names):

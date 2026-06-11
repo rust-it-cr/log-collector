@@ -95,13 +95,7 @@ You can also filter by both keywords and timestamps if that's what you need:
 logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -f "default-log-messages" -t "2025-01-01T00" -k "crash" and "version" and "upgrade" 
 ```
 
-### 4. Case-insensitive searching:
-If needed, you can perform a case-insensitive search if you don't remember if the keyword is lower- or upper-case, of a combination thereof:
-```bash
-logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -f "kmd-logs" -t "Jan 1  12" -k "vpn" or "ipsec" or "ike" -i
-```
-
-### 5. Wildcard matching:
+### 4. Wildcard matching:
 If needed, you can use a wildcard to gather the files that match your expression:
 ```bash
 logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -w "chassisd" -k "fpc" and "pic"
@@ -119,7 +113,7 @@ This will match on all variety of files starting with `"chassisd"`, `"messages"`
 
 There's an special use for the `-w` parameter:
 ```bash
-logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -w all -k "vpn" or "bgp" or "l2vpn" or "chassisd" -i
+logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -w all -k "vpn" or "bgp" or "l2vpn" or "chassisd"
 ```
 
 The `all` parameter matches on all parsable files within the greater .tgz file for a really general serach.
