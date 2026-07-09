@@ -2,25 +2,27 @@
 
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL_v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0) [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 
-🛠️ **Python tool for Junos log analysis:**
-extracts .tgz bundles and filters by timestamp/keyword, generating a single .txt file as output. It speeds up log analysis and groups logs accordingly.
+🛠️ **Python tool for log analysis:**
+extracts logs and filters by timestamp/keyword, generating a single .txt file as output. It speeds up log analysis and groups logs accordingly.
 
 ## 💡 Who needs a log collector anyway?
 
-Network troubleshooting often requires analyzing Junos `.tgz` bundles that contain dozens of compressed log files. Manually extracting these and running `grep` or searching through text editors is time-consuming and prone to human error.
+Network troubleshooting often requires analyzing log bundles that contain dozens of compressed log files. Manually extracting these and running `grep` or searching through text editors is time-consuming and prone to human error.
 
 I built **logc** to solve three specific problems:
 - **Efficiency:** Automates the extraction and recursive searching of multiple logs in seconds.
 - **Precision:** Uses specific timestamp and/or keyword logic to narrow down logs to the exact window of a network event, reducing "noise".
 - **Portability:** Designed with zero external dependencies so it can be used immediately on any device with Python installed.
 
-It works as follows: it checks for a .tgz file, inspects all log files therein, and extracts all logs into a single file based on timestamp and or keyword. The output is a structured file with the name of each log file at the beginning of each section and the relevant logs underneath the headers. As an aside note, this is my first project in Python. Building it was fun, and I'm here for any fixes that may be necessary.
+It works as follows: it checks for a directory, inspects all log files therein, and extracts all logs into a single file based on timestamp and/or keyword. The output is a structured file with the name of each log file at the beginning of each section and the relevant logs underneath the headers. As an aside note, this is my first project in Python. Building it was fun, and I'm here for any fixes that may be necessary.
 
 ## 📦 Installing, Updating, and/or Uninstalling **logc**
 
-The recommended way to install **logc** is using `pipx`. This ensures the tool works on Windows, Mac, and Linux by automatically managing your environment and system PATH.
+The recommended way to install **logc** is using `pipx`. This ensures the tool works on any OS by automatically managing your environment and system PATH.
 
-### 1. Set up pipx (first time only - just for Windows)
+### 1. Install Python and Git on your system.
+
+### 2. Set up pipx
 If you don't have [pipx](https://pypi.org/project/pipx/) installed, run:
 ```bash
 python -m pip install --user pipx
@@ -29,7 +31,7 @@ python -m pipx ensurepath
 
 **Note**: Restart your terminal after running ensurepath.
 
-### 2. Install the tool:
+### 3. Install the tool:
 
 To install **logc**, run the following command:
 
@@ -38,7 +40,7 @@ pipx install git+https://github.com/rust-it-cr/log-collector.git
 ```
 **Note**: This installation method requires [Git](https://www.google.com/search?q=https://git-scm.com/downloads) to be installed on your local machine. However, you do not need a GitHub account to download the tool.
 
-### 3. Update the tool:
+### 4. Update the tool:
 
 To update the tool, simply run the following command:
 
@@ -52,7 +54,7 @@ If already up to date, your terminal will display the following message:
 "logc is already at latest version x.y.z (location: <location on your PC>)"
 ```
 
-### 4. Uninstall the tool:
+### 5. Uninstall the tool:
 
 If for some reason you don't want to use this tool any longer, uninstalling it is as simple as running this command:
 
@@ -84,39 +86,22 @@ logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/outpu
 ```
 
 ### 2. Searching for logs within a specific time
-If you need to find all the logs from a specifit timestamp or time range across different files (or just one):
+If you need to find all the logs from a specific timestamp or time range across different files (or just one):
 ```bash
-logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -f "chassisd" -t "Oct  6 to Oct  8"
+logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -f "chassisd" -t "2025-10-06 to 2025-10-07"
 ```
 
 ### 3. Combining filters:
 You can also filter by both keywords and timestamps if that's what you need:
 ```bash
-logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -f "default-log-messages" -t "2025-01-01T00" -k "crash" and "version" and "upgrade" 
+logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -f "default-log-messages" -t "2025-01-01T00:00:00" -k "crash" and "version" and "upgrade"
 ```
 
-### 4. Wildcard matching:
-If needed, you can use a wildcard to gather the files that match your expression:
+### 4. Match all files:
+You can also perform a search on all parsable files by doing the following:
 ```bash
-logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -w "chassisd" -k "fpc" and "pic"
+logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -f ".*" -t "2025-01-01T00:00:00" -k "crash" and "version" and "upgrade"
 ```
-
-In this case, `-w "chassisd"` matches all files starting with that pattern, e.g., chassisd, chassisd.0.gz, chassisd.1.gz, etc.
-
-You can also do a match on several expressions to parse many different files:
-
-```bash
-logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -w "chassisd" "messages" "jsrpd" -t "Jan 16 06"
-```
-
-This will match on all variety of files starting with `"chassisd"`, `"messages"`, or `"jsrpd"`.
-
-There's an special use for the `-w` parameter:
-```bash
-logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -w all -k "vpn" or "bgp" or "l2vpn" or "chassisd"
-```
-
-The `all` parameter matches on all parsable files within the greater .tgz file for a really general serach.
 
 ## 🧪 Testing & Error Handling
 
@@ -147,13 +132,13 @@ pytest
 
 3. Unknown error handling:
 
-Also, this tool has a way of handling unknown errors gracefully. If that happens, you will see the following output and a file in your "Desktop" folder (which then you can send me for debugging purposes):
+Also, this tool has a way of handling unknown errors gracefully. If that happens, you will see the following output (which you can send me later for debugging purposes)
 ```bash
 logc -s "C:\Users\user_name\Downloads\corrupted-logs.tgz" -d "C:\Users\user_name\Downloads\no-file.txt" -f "messages" -k "ge-0/0/0"
 
 'An error has occurred!'
 'Error: <a technical description of the error>'
-'Check the logc_error.log file for technical details and check the official guide (logc -h) for a guide on how to use this program.'
+'Please share this entire error message with the developer of this tool for further debugging.'
 ```
 
 ## 📜 License
