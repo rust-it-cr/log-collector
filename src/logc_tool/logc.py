@@ -190,12 +190,15 @@ def parse_by_time(lines, user_time):
     filtered_lines = []
 
     for line in lines:
-        if match := re.search(RFC_5424, line):
-            line_time = datetime.datetime.fromisoformat(str(match.group(0)))
-        elif match := re.search(BSD_SYSLOG, line, re.IGNORECASE):
-            match = f"{str(datetime.datetime.today().year)} {str(match.group(0))}" # This is the biggest limitation: assuming the current year will break the tool at some point
-            line_time = datetime.datetime.strptime(match, "%Y %b %d %H:%M:%S")
-        
+        try:
+            if match := re.search(RFC_5424, line):
+                line_time = datetime.datetime.fromisoformat(str(match.group(0)))
+            elif match := re.search(BSD_SYSLOG, line, re.IGNORECASE):
+                match = f"{str(datetime.datetime.today().year)} {str(match.group(0))}" # This is the biggest limitation: assuming the current year will break the tool at some point: year transition and leap years break this
+                line_time = datetime.datetime.strptime(match, "%Y %b %d %H:%M:%S")
+        except ValueError:
+            pass
+            
         for filter in user_time:
             if isinstance(filter, list):
                 start = filter[0]
