@@ -27,7 +27,7 @@ class UnknownCompressionTypeError(Exception):
 
 
 RFC_5424 = r"(\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d)"
-BSD_SYSLOG = r"(\w{3,9} \d?\d \d\d:\d\d:\d\d)"
+BSD_SYSLOG = r"(\w{3,9}  ?\d?\d \d\d:\d\d:\d\d)"
 
 
 def main():
@@ -198,7 +198,7 @@ def parse_by_time(lines, user_time):
                 line_time = datetime.datetime.strptime(match, "%Y %b %d %H:%M:%S")
         except ValueError:
             pass
-            
+
         for filter in user_time:
             if isinstance(filter, list):
                 start = filter[0]
