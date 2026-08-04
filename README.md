@@ -103,34 +103,9 @@ You can also perform a search on all parsable files by doing the following:
 logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -f ".*" -t "2025-01-01T00:00:00" -k "crash" and "version" and "upgrade"
 ```
 
-## 🧪 Testing & Error Handling
+## 🧪 Error Handling
 
-This project uses `pytest` and the standard src layout. To run tests, you must install the project in editable mode so the test suite can locate the package logic.
-
-1. Install the package and dependencies:
-```bash
-pip install pytest
-pip install -e .
-```
-
-2. Run the tests:
-
-Always run the tests from the project root directory (where the pyproject.toml file is located). This ensures the logc_tool package is correctly discovered.
-
-For Windows users:
-```bash
-python -m pytest
-```
-
-For MacOS/Linux users:
-
-```bash
-pytest
-```
-
-[**IMPORTANT**] Do not run the tests from inside the tests/ folder. Running from the root directory allows pytest to properly map the src/ layout and find all test files automatically.
-
-3. Unknown error handling:
+1. Unknown error handling:
 
 Also, this tool has a way of handling unknown errors gracefully. If that happens, you will see the following output (which you can send me later for debugging purposes)
 ```bash
