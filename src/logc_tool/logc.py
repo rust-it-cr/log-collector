@@ -95,7 +95,6 @@ def main():
 
 def parse_args(args=None):
     parser_message = "This tool takes a directory with log files therein and filters logs based on keyword/timestamp, generating a single file with matching results. You should wrap all arguments around quotation marks to avoid readability errors."
-    parser_epilogue = "If you want more information about my work, please consider visiting my GitHub profile: https://github.com/rust-it-cr"
 
     source_help = "Source path for the file that contains all log files you want to parse. Ideally, this should be an absolute path."
     time_help = "Specify the timestamp or timerange to be used to collect logs from all specified log files. Time format: YYYY-MM-DDThh:mm:ss[ to YYYY-MM-DDThh:mm:ss]."
@@ -103,7 +102,7 @@ def parse_args(args=None):
     key_help = "Specific a keyword or collection thereof to match on the selected log files. You can select a single keyword or a chain thereof with either AND or OR operators."
     file_help = "Specify a filename or a regex to match on files you want to parse."
 
-    parser = argparse.ArgumentParser(prog="logc", description=parser_message, epilog=parser_epilogue)
+    parser = argparse.ArgumentParser(prog="logc", description=parser_message)
 
     parser.add_argument("-s", "--source", help=source_help)
     parser.add_argument("-d", "--destination", help=destination_help)
