@@ -88,7 +88,7 @@ logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/outpu
 ### 2. Searching for logs within a specific time
 If you need to find all the logs from a specific timestamp or time range across different files (or just one):
 ```bash
-logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -f "chassisd" -t "2025-10-06 to 2025-10-07"
+logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -f "chassisd" -t "2025-10-06T00:00:00 to 2025-10-07T23:59:59"
 ```
 
 ### 3. Combining filters:
