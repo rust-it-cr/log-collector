@@ -103,13 +103,11 @@ You can also perform a search on all parsable files by doing the following:
 logc -s "/home/user_name/Downloads/logs.tgz" -d "/home/user_name/Downloads/output.txt" -f ".*" -t "2025-01-01T00:00:00" -k "crash" and "version" and "upgrade"
 ```
 
-## 🧪 Error Handling
+## ⚠️ Error Handling
 
-1. Unknown error handling:
-
-Also, this tool has a way of handling unknown errors gracefully. If that happens, you will see the following output (which you can send me later for debugging purposes)
+This tool has a way of handling unknown errors gracefully. If you chance upon an error I haven't discovered yet, you will see the following output (which you can then send me for debugging purposes):
 ```bash
-logc -s "C:\Users\user_name\Downloads\corrupted-logs.tgz" -d "C:\Users\user_name\Downloads\no-file.txt" -f "messages" -k "ge-0/0/0"
+logc -s "C:\Users\user_name\Downloads\corrupted-logs" -d "C:\Users\user_name\Downloads\file.txt" -f "messages" -k "ge-0/0/0"
 
 'An error has occurred!'
 'Error: <a technical description of the error>'
